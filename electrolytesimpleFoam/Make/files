@@ -1,0 +1,3 @@
+electrolytesimpleFoam.C
+
+EXE = $(FOAM_APPBIN)/electrolytesimpleFoam
