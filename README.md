@@ -17,3 +17,5 @@ run the following commands:
 blockmesh -case path/to/testcase
 electrolyteFoam -case path/to/testcase
 ```
+
+for more info about how to build testcases of your own, see [https://www.openfoam.com/documentation/overview](OpenFOAM's documentation)
