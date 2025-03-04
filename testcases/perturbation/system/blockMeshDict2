@@ -1,0 +1,126 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2406                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      blockMeshDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+size 1;
+size_half #calc "(0.5*$size)";
+ratio 5;
+//inv 0.25;
+inv #calc "(1./$ratio)";
+cells 200;
+
+scale 3;
+
+vertices
+(
+    (-$size_half 		-$size_half 		$size_half) //0
+    ($size_half 		-$size_half 		$size_half) //1
+    ($size_half 		-$size_half 		-$size_half) //2
+    (-$size_half 		-$size_half 		-$size_half) //3
+    (-$size_half 		$size_half 		$size_half) //4
+    ($size_half 		$size_half 		$size_half) //5
+    ($size_half 		$size_half 		-$size_half) //6
+    (-$size_half 		$size_half 		-$size_half) //7
+
+
+);
+
+
+blocks
+(
+    hex (0 1 2 3 4 5 6 7) ($cells $cells $cells) 
+	simpleGrading
+	(
+		(
+			(0.5 0.5 $inv) 
+			(0.5 0.5 $ratio)
+		)
+		(
+			(0.5 0.5 $inv)
+			(0.5 0.5 $ratio)
+		)
+		(
+			(0.5 0.5 $inv)
+			(0.5 0.5 $ratio)
+		)
+	)
+);
+
+edges
+(
+);
+
+
+
+boundary
+(
+    front
+    {
+        type patch;
+        faces
+        (
+            (0 4 7 3)
+        );
+    }
+
+    back
+    {
+        type patch;
+        faces
+        (
+            (2 6 5 1)
+            
+        );
+    }
+
+    left
+    {
+        type patch;
+        faces
+        (
+            (0 3 2 1)
+             
+        );
+    }
+
+    right
+    {
+        type patch;
+        faces
+        (
+            (4 5 6 7)
+        );
+    }
+
+    top
+    {
+        type     patch;
+        faces
+        (
+            (3 7 6 2)
+        );
+    }
+   bottom
+    {
+        type patch;
+        faces
+        (
+            (1 5 4 0)
+        );
+    }
+);
+
+
+// ************************************************************************* //

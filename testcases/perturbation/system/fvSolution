@@ -1,0 +1,137 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2306                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      fvSolution;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+solvers
+{
+
+    p
+    {
+        solver GAMG;
+      	smoother  GaussSeidel;
+            tolerance 6e-12;
+            relTol 0.001;
+    }
+
+
+    pFinal
+    {
+        $p;
+        relTol          0;
+    }
+
+    "(n1|n2)"
+    {
+//        solver GAMG;
+//		smoother  GaussSeidel;
+		solver PBiCGStab;
+		preconditioner  DILU;
+            tolerance 1e-14;
+            relTol 0.001;
+    }
+
+    U
+    {
+       solver PBiCGStab;
+	preconditioner  DILU;
+        tolerance       1e-05;
+        relTol          0.1;
+      }
+
+
+
+    Psi
+    {      
+        solver          GAMG;
+        smoother  DICGaussSeidel;
+            tolerance 1e-14;
+            relTol 0.001;
+    }
+
+    UFinal
+    {
+        $U;
+        relTol          0;
+    }
+
+    pFinal
+    {
+        $p;
+        relTol          0;
+    }
+
+    "(n1|n2)Final"
+    {
+        $n1;
+        relTol          0;
+    }
+
+    PsiFinal
+    {
+        $Psi;
+        relTol          0;
+    }
+}
+
+PIMPLE
+{
+    nCorrectors 3;  
+    nOuterCorrectors  10000;
+    nNonOrthogonalCorrectors 0;
+    momentumPredictor no;       //this is essential //
+    pRefCell        0;
+    pRefValue       0;
+    residualControl
+    {
+        U
+        {
+            tolerance 1e-5;
+            relTol 0;
+        }
+        p
+        {
+            tolerance 6e-12;
+            relTol 0;
+        }
+        Psi
+        {
+            tolerance 1e-14;
+            relTol 0;
+        }
+        "(n1|n2)"
+        {
+            tolerance 1e-14;
+            relTol 0;
+        }
+    }
+}
+
+
+
+relaxationFactors
+{
+    fields
+    {
+        "(U|Psi)" 1;
+		 "(p)" 1;
+	    "(n1|n2)" 1;
+        "(U|n1|n2|Psi|p)Final"  1;
+;
+
+    }
+}
+
+
+// ************************************************************************* //

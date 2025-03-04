@@ -1,0 +1,133 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2306                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      fvSolution;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+solvers
+{
+
+    p
+    {
+        solver          PCG;
+        preconditioner  DIC;
+            tolerance 1e-11;
+            relTol 0.001;
+    }
+
+
+    pFinal
+    {
+        $p;
+        relTol          0;
+    }
+
+    "(n1|n2)"
+    {
+        solver PBiCG;
+        preconditioner DILU;
+            tolerance 1e-11;
+            relTol 0.001;
+    }
+
+    U
+    {
+        solver PBiCG;
+        preconditioner DILU;
+            tolerance 1e-11;
+            relTol 0.001;
+    }
+
+
+
+    Psi
+    {
+        solver          PCG;
+        preconditioner  DIC;
+            tolerance 1e-11;
+            relTol 0.001;
+    }
+
+    UFinal
+    {
+        $U;
+        relTol          0;
+    }
+
+    pFinal
+    {
+        $p;
+        relTol          0;
+    }
+
+    "(n1|n2)Final"
+    {
+        $n1;
+        relTol          0;
+    }
+
+    PsiFinal
+    {
+        $Psi;
+        relTol          0;
+    }
+}
+
+PIMPLE
+{
+    nCorrectors   3;
+    nOuterCorrectors  10000;
+    nNonOrthogonalCorrectors 0;
+    momentumPredictor yes;
+    pRefCell        0;
+    pRefValue       0;
+    residualControl
+    {
+        U
+        {
+            tolerance 1e-11;
+            relTol 0;
+        }
+        p
+        {
+            tolerance 1e-11;
+            relTol 0;
+        }
+        Psi
+        {
+            tolerance 1e-11;
+            relTol 0;
+        }
+        "(n1|n2)"
+        {
+            tolerance 1e-11;
+            relTol 0;
+        }
+    }
+}
+
+
+
+relaxationFactors
+{
+    fields
+    {
+        "(U|p|n1|n2|Psi)" 0.8;
+        "(U|n1|n2|Psi|p)Final" 1;
+;
+
+    }
+}
+
+
+// ************************************************************************* //

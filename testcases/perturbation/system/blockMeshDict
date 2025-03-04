@@ -1,0 +1,128 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2406                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      blockMeshDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+height 4;
+width 12;
+height_half #calc "(0.5*$height)";
+width_half #calc "(0.5*$width)";
+ratio 2;
+//inv 0.25;
+inv #calc "(1./$ratio)";
+cells_height 100;
+cells_width 300;
+
+scale 102.525350007106;
+
+vertices
+(
+    (-$width_half 		-$height_half 		0) //0
+    ($width_half		-$height_half 		0) //1
+    ($width_half 		$height_half		0) //2
+    (-$width_half 		$height_half 		0) //3
+    (-$width_half 		-$height_half		0.1) //4
+    ($width_half 		-$height_half 		0.1) //5
+    ($width_half 		$height_half 		0.1) //6
+    (-$width_half 		$height_half 		0.1) //7
+
+
+);
+
+
+blocks
+(
+    hex (0 1 2 3 4 5 6 7) ($cells_width $cells_height 1) 
+	simpleGrading
+	(
+		(
+			(0.5 0.5 $inv) 
+			(0.5 0.5 $ratio)
+		)
+		(
+			(0.5 0.5 $inv)
+			(0.5 0.5 $ratio)
+		)
+		(
+                        (1 1 1)
+		)
+	)
+);
+
+edges
+(
+);
+
+
+
+boundary
+(
+    left
+    {
+        type wall;
+        faces
+        (
+            (0 4 7 3)
+        );
+    }
+
+    right
+    {
+        type wall;
+        faces
+        (
+            (2 6 5 1)
+            
+        );
+    }
+
+    back
+    {
+        type empty;
+        faces
+        (
+            (0 3 2 1)
+             
+        );
+    }
+
+    front
+    {
+        type empty;
+        faces
+        (
+            (4 5 6 7)
+        );
+    }
+
+    top
+    {
+        type     wall;
+        faces
+        (
+            (3 7 6 2)
+        );
+    }
+   bottom
+    {
+        type wall;
+        faces
+        (
+            (1 5 4 0)
+        );
+    }
+);
+
+
+// ************************************************************************* //
