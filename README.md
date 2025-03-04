@@ -18,4 +18,4 @@ blockmesh -case path/to/testcase
 electrolyteFoam -case path/to/testcase
 ```
 
-for more info about how to build testcases of your own, see [https://www.openfoam.com/documentation/overview](OpenFOAM's documentation)
+for more info about how to build testcases of your own, see [OpenFOAM's documentation](https://www.openfoam.com/documentation/overview])
