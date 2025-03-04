@@ -1,4 +1,4 @@
-the solver was developed and tested on the ESI version
+the solver was developed and tested on the ESI version of OpenFOAM/
 
 compilation instructions:
 extract the contest of electrolytesimpleFoam into path/to/openfoam/applications/solvers
